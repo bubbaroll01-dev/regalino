@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riproduci Audio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .audio-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        
+        audio {
+            width: 100%;
+            margin-bottom: 20px;
+            outline: none;
+        }
+        
+        .play-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+        
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .play-btn:active {
+            transform: translateY(0);
+        }
+        
+        .status {
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="audio-icon">🎵</div>
+        <h1>Riproduci Audio</h1>
+        
+        <audio id="audioPlayer" controls>
+            <source src="https://files.catbox.moe/mk39hk.m4a" type="audio/mpeg">
+            Il tuo browser non supporta l'elemento audio.
+        </audio>
+        
+        <button class="play-btn" id="playBtn">▶️ Play</button>
+        
+        <div class="status" id="status">Premi play per iniziare</div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const status = document.getElementById('status');
+        
+        playBtn.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸️ Pausa';
+                status.textContent = 'In riproduzione...';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶️ Play';
+                status.textContent = 'In pausa';
+            }
+        });
+        
+        audio.addEventListener('ended', function() {
+            playBtn.textContent = '▶️ Play';
+            status.textContent = 'Audio terminato';
+        });
+        
+        audio.addEventListener('error', function() {
+            status.textContent = 'Errore nel caricamento dell\'audio';
+            status.style.color = '#e74c3c';
+        });
+        
+        // Tentativo di autoplay (potrebbe essere bloccato dal browser)
+        window.addEventListener('load', function() {
+            audio.play().catch(function(error) {
+                console.log('Autoplay bloccato:', error);
+                status.textContent = 'Premi play per iniziare';
+            });
+        });
+    </script>
+</body>
+</html>
